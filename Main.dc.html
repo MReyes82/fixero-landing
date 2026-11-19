@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Fixero: tu dispositivo, en las mejores manos</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Source+Serif+4:ital,wght@0,400;0,500;1,400&amp;family=Noto+Sans+SC:wght@400;500;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+.fx{
+  --bg:#F3F5FB; --bg2:#EAECF4; --text:#0E1117; --body:#262B36; --secondary:#3D4350; --helper:#5B6170;
+  --card:#FFFFFF; --card-border:rgba(14,17,23,.08); --field:#EAECF4; --line:#B4B9C6;
+  --accent:#FF5C35; --accent-ink:#C8401C; --accent-display:#E5482A; --accent-soft:rgba(255,92,53,.10);
+  --phone:#0E1117; --shadow:0 2.4vh 6vh rgba(14,17,23,.18); --shadow-card:0 16px 40px rgba(14,17,23,.10);
+  --display:'Playfair Display', Georgia, serif; --serif:'Source Serif 4', Georgia, serif;
+  --sans:'Noto Sans SC', system-ui, -apple-system, 'Segoe UI', sans-serif; --mono:'IBM Plex Mono', ui-monospace, monospace;
+}
+.fx.dark{
+  --bg:#101319; --bg2:#1B202A; --text:#F3F5FB; --body:#D5DAE3; --secondary:#BAC1CD; --helper:#A6AFBF;
+  --card:#1B202A; --card-border:#3C4554; --field:#283047; --line:#3C4554;
+  --accent-ink:#FF7A59; --accent-display:#FF5C35; --accent-soft:rgba(255,92,53,.14);
+  --phone:#000000; --shadow:0 2.4vh 6vh rgba(0,0,0,.6); --shadow-card:0 16px 40px rgba(0,0,0,.5);
+}
+.fx .ink{
+  background:#0E1117 url(./assets/ab3a9cf0baa1ac9235a74f6bd9e90ad6.jpg) center / cover no-repeat;
+  color:#F3F5FB; --s-body:rgba(243,245,251,.86); --s-sec:rgba(243,245,251,.74); --s-helper:rgba(243,245,251,.64);
+  --s-line:rgba(243,245,251,.22); --s-accent:#FF7A59;
+}
+.fx *{box-sizing:border-box}
+.fx a{color:var(--accent-ink)} .fx a:hover{color:var(--text)}
+.fx a.btn-primary, .fx a.btn-primary:hover{color:#FFFFFF}
+.fx a.btn-primary:hover{background:#E5482A !important}
+.fx a.btn-ink{color:var(--bg)} .fx a.btn-ink:hover{color:var(--bg); opacity:.86}
+.fx a.btn-ghost-dark, .fx a.btn-ghost-dark:hover{color:#F3F5FB}
+.fx a.btn-ghost-dark:hover{background:rgba(243,245,251,.10) !important}
+.fx a.nav-link{color:var(--text); text-decoration:none} .fx a.nav-link:hover{color:var(--accent-ink)}
+.fx a.foot-link{color:rgba(243,245,251,.70); text-decoration:none} .fx a.foot-link:hover{color:#F3F5FB}
+.fx :focus-visible{outline:3px solid var(--accent); outline-offset:3px; border-radius:8px}
+.fx details summary{list-style:none; cursor:pointer}
+.fx details summary::-webkit-details-marker{display:none}
+.fx details[open] .chev{transform:rotate(45deg)}
+.fx details[open]{background:var(--card)}
+.fx table{border-collapse:separate; border-spacing:0}
+@media (max-width: 900px){ .fx .hide-sm{display:none !important} }
+</style>
+</helmet>
+
+<div class="{{rootClass}}" style="background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 1.0625rem; line-height: 1.6; letter-spacing: 0.01em; min-height: 100vh; transition: background .25s, color .25s;">
+
+<!-- NAV -->
+<header style="position: sticky; top: 0; z-index: 20; background: var(--bg); border-bottom: 1px solid var(--card-border);">
+  <nav aria-label="Principal" style="max-width: 1240px; margin: 0 auto; padding: 14px clamp(20px, 4vw, 48px); display: flex; align-items: center; gap: 28px; flex-wrap: wrap;">
+    <a href="#inicio" class="nav-link" style="display: flex; align-items: center; gap: 10px; margin-right: auto;">
+      <svg viewBox="183 78 651 815" width="28" height="35" aria-hidden="true" style="color: var(--accent);"><path fill="currentColor" d="m833.4 400.4c0-82.43-24.32-151.8-83.2-216.6-60.16-66.18-145.4-105.1-236.5-105.1-179.5 0-330.1 140.8-330.1 318.7 0 118.5 50.18 212.9 129.5 265-0.128 0.512-0.384 1.024-0.64 1.664-24.06 55.42-50.94 115.7-72.7 170.9-3.584 9.088 3.584 13.7 11.65 11.01l76.54-28.29c3.712-1.28 7.296-0.256 9.6 2.816l51.2 67.07c5.632 7.04 14.46 5.248 16.64-2.944l48.51-166.1c18.18 2.816 36.35 4.48 54.53 4.48 19.71 0 39.04-2.048 55.04-4.48 16.26 53.76 32.9 115.3 45.57 167 2.048 7.552 11.78 9.216 16.38 3.072l51.84-66.94c2.56-3.584 6.528-4.48 10.37-3.2l76.8 26.62c9.344 3.712 15.62-2.944 12.29-11.26-22.78-57.09-49.41-122-72.58-173.4 78.98-58.88 129.3-148.5 129.3-253.6v-6.4zm-329.7 289.8c-160.9 0-284-123.9-284-284.2v-6.784c0-162 130.8-283.9 293.8-283.9 161.9 0 285.2 123.8 285.2 283.1v7.808c0 168.1-134.8 283.9-294.9 283.9z"></path><path fill="currentColor" d="m513 140.4c-146.9 0-269.8 111.1-269.8 263.7v2.816c0 153 117 258.6 262.5 258.6 152.3 0 270-111.7 270-260.2v-6.528c0-145.3-117.9-258.3-262.7-258.3zm228.4 264.8c0 59.9-19.58 112.1-65.41 154.9-46.85 45.95-110.6 73.86-174.3 73.86-125.1 0-224.9-99.71-224.9-226.2v-4.352c0-133 105.5-228.9 235.6-228.9 127.5 0 228.9 98.69 228.9 225l0.128 5.632z"></path><path fill="currentColor" d="m664.7 320.6-36.35 38.4c-13.31 14.34-56.83-28.67-45.31-41.47l41.98-38.02c5.632-5.888 2.688-15.49-6.784-17.54-57.86-9.728-110.7 39.68-100.7 99.71 0.128 1.024-0.384 1.664-1.152 2.432l-142.7 124.7c-34.56 31.49 12.54 82.56 48.26 58.24 49.15-40.45 103.8-88.83 145.8-127.5 0.64-0.512 1.408-0.512 2.176-0.256 65.92 25.09 129.3-44.29 111.9-94.98-1.792-7.936-10.75-8.96-17.02-3.712z"></path></svg>
+      <span style="font-family: var(--display); font-weight: 700; font-size: 1.625rem; letter-spacing: -0.025em; color: var(--text);">Fixero</span>
+    </a>
+    <div class="hide-sm" style="display: flex; gap: 30px; font-weight: 500; font-size: 0.9375rem;">
+      <a href="#como-funciona" class="nav-link">Cómo funciona</a>
+      <a href="#confianza" class="nav-link">Confianza</a>
+      <a href="#tecnicos" class="nav-link">Para técnicos</a>
+      <a href="#preguntas" class="nav-link">Preguntas</a>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--card-border); background: var(--card); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+        <sc-if value="{{isLight}}" hint-placeholder-val="{{ true }}">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </sc-if>
+        <sc-if value="{{isDark}}" hint-placeholder-val="{{ false }}">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+        </sc-if>
+      </button>
+      <a href="#demo" class="btn-ink" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: 999px; background: var(--text); font-weight: 700; font-size: 0.9375rem; text-decoration: none;"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.53.85l12-7.5a1 1 0 0 0 0-1.7l-12-7.5A1 1 0 0 0 7 4.5z"></path></svg>Ver la demo</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section id="inicio" class="ink" aria-labelledby="hero-t">
+  <div style="max-width: 1240px; margin: 0 auto; padding: 28px clamp(20px, 4vw, 48px) clamp(56px, 7vw, 96px); display: flex; flex-direction: column; gap: clamp(40px, 6vw, 72px);">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--s-helper);">
+      <span>Reparaciones con técnicos de confianza</span>
+      <span style="display: flex; align-items: center; gap: 10px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        Tijuana, Baja California
+      </span>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 56px;">
+      <div style="flex: 1 1 500px; min-width: 0; display: flex; flex-direction: column; gap: 28px;">
+        <h1 id="hero-t" style="margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.98; letter-spacing: -0.025em; color: #F3F5FB;">Tu dispositivo, en las <span style="color: #FF5C35;">mejores manos</span>.</h1>
+        <p style="margin: 0; font-family: var(--serif); font-size: clamp(1.25rem, 1.75vw, 1.5rem); line-height: 1.5; color: var(--s-body); max-width: 32ch;">Describe la falla, recibe propuestas de técnicos cerca de ti y elige con confianza.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+          <a href="#demo" class="btn-primary" style="display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 28px; border-radius: 999px; background: #FF5C35; font-weight: 700; font-size: 1.1875rem; text-decoration: none;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.53.85l12-7.5a1 1 0 0 0 0-1.7l-12-7.5A1 1 0 0 0 7 4.5z"></path></svg>
+            Ver la demo
+          </a>
+          <a href="#tecnicos" class="btn-ghost-dark" style="display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 26px; border-radius: 999px; border: 1px solid rgba(243,245,251,.45); font-weight: 700; font-size: 1.1875rem; text-decoration: none;">
+            Soy técnico
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </a>
+        </div>
+        <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 0.9375rem; color: var(--s-body);">
+          <li style="display: flex; align-items: center; gap: 8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--s-accent);"><path d="M20 6 9 17l-5-5"></path></svg>Gratis para el cliente</li>
+          <li style="display: flex; align-items: center; gap: 8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--s-accent);"><path d="M20 6 9 17l-5-5"></path></svg>Técnicos verificados</li>
+          <li style="display: flex; align-items: center; gap: 8px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--s-accent);"><path d="M20 6 9 17l-5-5"></path></svg>Reseñas solo de servicios reales</li>
+        </ul>
+        <span style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--s-line); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--s-sec);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+          Próximamente en Android e iOS
+        </span>
+      </div>
+
+      <div style="flex: 1 1 420px; min-width: 0; position: relative; height: 600px; max-width: 520px; margin: 0 auto;">
+        <div style="position: absolute; left: 6%; top: 60px; width: 220px; transform: rotate(-7deg); background: var(--phone); padding: 9px; border-radius: 40px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.7); border: 1px solid rgba(243,245,251,.14);">
+          <img src="./assets/129280d2f3ea16a8cb4b5ca0e12991ec.png" alt="Pantalla de Fixero: diagnóstico rápido con IA a partir de la descripción de la falla" style="display: block; width: 100%; aspect-ratio: 372 / 853; object-fit: cover; border-radius: 32px;">
+        </div>
+        <div style="position: absolute; right: 6%; top: 0; width: 250px; background: var(--phone); padding: 10px; border-radius: 44px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.7); border: 1px solid rgba(243,245,251,.14);">
+          <img src="./assets/c907a67ca8c3fc4d93bbfa42b7f1ac9b.png" alt="Pantalla de Fixero: propuestas recibidas con precio, tiempo y calificación de cada técnico" style="display: block; width: 100%; aspect-ratio: 372 / 853; object-fit: cover; border-radius: 35px;">
+        </div>
+        <div style="position: absolute; left: 0; bottom: 70px; display: flex; align-items: center; gap: 12px; padding: 12px 18px 12px 12px; border-radius: 14px; background: #FFFFFF; color: #0E1117; box-shadow: 0 16px 40px rgba(0,0,0,.35); font-weight: 500; font-size: 0.9375rem;">
+          <span style="width: 34px; height: 34px; border-radius: 999px; background: #FF5C35; color: #FFFFFF; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.94 14.06 2 22"></path><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path></svg></span>
+          Diagnóstico rápido con IA
+        </div>
+        <div style="position: absolute; right: 0; bottom: 10px; display: flex; flex-direction: column; gap: 4px; padding: 14px 18px; border-radius: 14px; background: #FFFFFF; color: #0E1117; box-shadow: 0 16px 40px rgba(0,0,0,.35);">
+          <span style="font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.2em; text-transform: uppercase; color: #5B6170;">Propuestas recibidas</span>
+          <span style="font-family: var(--display); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.01em;">2 técnicos, desde $8,000</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 PROBLEMA -->
+<section aria-labelledby="problema-t" style="max-width: 1240px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 48px); display: flex; flex-direction: column; gap: 40px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--helper);">
+    <span style="display: flex; align-items: center; gap: 16px;"><span>01</span><span aria-hidden="true" style="width: 40px; height: 1px; background: currentColor;"></span><span>El problema</span></span>
+    <span>Cliente y técnico</span>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 18px; max-width: 900px;">
+    <p style="margin: 0; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--helper);">Dos lados, el mismo hueco</p>
+    <h2 id="problema-t" style="margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(2.25rem, 4.2vw, 3.75rem); line-height: 1.08; letter-spacing: -0.01em;">La <span style="color: var(--accent-display);">confianza</span> en la reparación no tiene sistema</h2>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; align-items: stretch;">
+    <div style="background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 32px 32px 20px;">
+      <p style="margin: 0 0 18px; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--helper);">El cliente</p>
+      <ul style="margin: 0; padding: 0; list-style: none;">
+        <li style="padding: 4px 0 16px;">
+          <span style="display: block; font-family: var(--display); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--text);">¿Qué le pasa a mi equipo?</span>
+          <span style="display: block; margin-top: 4px; font-size: 0.9375rem; color: var(--helper);">No sabes explicar la falla ni qué tan grave es.</span>
+        </li>
+        <li style="padding: 16px 0; border-top: 1px solid var(--card-border);">
+          <span style="display: block; font-family: var(--display); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--text);">¿Cuánto debería costar?</span>
+          <span style="display: block; margin-top: 4px; font-size: 0.9375rem; color: var(--helper);">Vas de taller en taller comparando precios.</span>
+        </li>
+        <li style="padding: 16px 0; border-top: 1px solid var(--card-border);">
+          <span style="display: block; font-family: var(--display); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--text);">¿Puedo confiar en este técnico?</span>
+          <span style="display: block; margin-top: 4px; font-size: 0.9375rem; color: var(--helper);">No ves su trabajo ni opiniones de otros clientes.</span>
+        </li>
+        <li style="padding: 16px 0; border-top: 1px solid var(--card-border);">
+          <span style="display: block; font-family: var(--display); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--text);">¿Cómo va mi reparación?</span>
+          <span style="display: block; margin-top: 4px; font-size: 0.9375rem; color: var(--helper);">Todo se pierde entre llamadas y mensajes.</span>
+        </li>
+      </ul>
+    </div>
+    <div style="background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 32px 32px 20px;">
+      <p style="margin: 0 0 18px; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--helper);">El técnico honesto</p>
+      <ul style="margin: 0; padding: 0; list-style: none; font-family: var(--display); font-weight: 400; font-size: 1.5rem; line-height: 1.3; color: var(--text);">
+        <li style="padding: 4px 0 16px;">Depende de recomendaciones</li>
+        <li style="padding: 16px 0; border-top: 1px solid var(--card-border);">Su reputación depende del lugar donde trabaja</li>
+        <li style="padding: 16px 0; border-top: 1px solid var(--card-border);">Tiene que inventar cómo demostrar su trabajo</li>
+        <li style="padding: 16px 0; border-top: 1px solid var(--card-border);">No tiene dónde darse a conocer</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 02 CÓMO FUNCIONA -->
+<section id="como-funciona" aria-labelledby="como-t" style="max-width: 1240px; margin: 0 auto; padding: 24px clamp(20px, 4vw, 48px) clamp(56px, 7vw, 96px); display: flex; flex-direction: column; gap: 48px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--helper);">
+    <span style="display: flex; align-items: center; gap: 16px;"><span>02</span><span aria-hidden="true" style="width: 40px; height: 1px; background: currentColor;"></span><span>La solución</span></span>
+    <span>Cuatro pasos</span>
+  </div>
+  <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px;">
+    <div style="display: flex; flex-direction: column; gap: 18px; max-width: 760px;">
+      <p style="margin: 0; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--helper);">Así funciona</p>
+      <h2 id="como-t" style="margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(2.25rem, 4.2vw, 3.75rem); line-height: 1.08; letter-spacing: -0.01em;">Los técnicos compiten por tu reparación</h2>
+    </div>
+    <p style="margin: 0; max-width: 34ch; font-family: var(--serif); font-size: 1.25rem; line-height: 1.5; color: var(--secondary);">En lugar de buscar taller por taller, los técnicos de tu zona vienen a ti.</p>
+  </div>
+
+  <ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 48px 28px;">
+    <li style="display: flex; flex-direction: column; gap: 28px;">
+      <div style="width: 100%; max-width: 236px; margin: 0 auto; background: var(--phone); padding: 9px; border-radius: 40px; box-shadow: var(--shadow);">
+        <img src="./assets/129280d2f3ea16a8cb4b5ca0e12991ec.png" alt="Chat con el asistente de IA de Fixero analizando la falla descrita" style="display: block; width: 100%; aspect-ratio: 372 / 853; object-fit: cover; border-radius: 32px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid var(--line);">
+        <div style="display: flex; align-items: baseline; gap: 14px;">
+          <span style="font-family: var(--display); font-weight: 700; font-size: 2.75rem; line-height: 0.9; letter-spacing: -0.03em; color: var(--accent-display);">1</span>
+          <h3 style="margin: 0; font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1.15;">Cuéntale al asistente</h3>
+        </div>
+        <p style="margin: 0; color: var(--helper); font-size: 1rem; line-height: 1.55;">Con tus palabras o con fotos; la IA identifica la falla y arma tu solicitud.</p>
+      </div>
+    </li>
+    <li style="display: flex; flex-direction: column; gap: 28px;">
+      <div style="width: 100%; max-width: 236px; margin: 0 auto; background: var(--phone); padding: 9px; border-radius: 40px; box-shadow: var(--shadow);">
+        <img src="./assets/c907a67ca8c3fc4d93bbfa42b7f1ac9b.png" alt="Lista de propuestas de técnicos con precio, tiempo de entrega y calificación" style="display: block; width: 100%; aspect-ratio: 372 / 853; object-fit: cover; border-radius: 32px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid var(--line);">
+        <div style="display: flex; align-items: baseline; gap: 14px;">
+          <span style="font-family: var(--display); font-weight: 700; font-size: 2.75rem; line-height: 0.9; letter-spacing: -0.03em; color: var(--helper);">2</span>
+          <h3 style="margin: 0; font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1.15;">Compara propuestas</h3>
+        </div>
+        <p style="margin: 0; color: var(--helper); font-size: 1rem; line-height: 1.55;">Técnicos de tu zona te envían precio y tiempo; los ves lado a lado.</p>
+      </div>
+    </li>
+    <li style="display: flex; flex-direction: column; gap: 28px;">
+      <div style="width: 100%; max-width: 236px; margin: 0 auto; background: var(--phone); padding: 9px; border-radius: 40px; box-shadow: var(--shadow);">
+        <img src="./assets/eb9813fa66b02cd1c5ceb5a9fd5b79c8.png" alt="Chat con el técnico con la propuesta recibida y una foto del equipo dañado" style="display: block; width: 100%; aspect-ratio: 372 / 853; object-fit: cover; border-radius: 32px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid var(--line);">
+        <div style="display: flex; align-items: baseline; gap: 14px;">
+          <span style="font-family: var(--display); font-weight: 700; font-size: 2.75rem; line-height: 0.9; letter-spacing: -0.03em; color: var(--helper);">3</span>
+          <h3 style="margin: 0; font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1.15;">Sigue tu reparación</h3>
+        </div>
+        <p style="margin: 0; color: var(--helper); font-size: 1rem; line-height: 1.55;">Resuelve dudas y recibe avances en un chat con fotos y video.</p>
+      </div>
+    </li>
+    <li style="display: flex; flex-direction: column; gap: 28px;">
+      <div style="width: 100%; max-width: 236px; margin: 0 auto; background: var(--phone); padding: 9px; border-radius: 40px; box-shadow: var(--shadow);">
+        <img src="./assets/99fe0f9775dd3ac5b9cfafdc31f090b4.png" alt="Pantalla para calificar al técnico con cinco estrellas y un comentario" style="display: block; width: 100%; aspect-ratio: 372 / 853; object-fit: cover; border-radius: 32px;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid var(--line);">
+        <div style="display: flex; align-items: baseline; gap: 14px;">
+          <span style="font-family: var(--display); font-weight: 700; font-size: 2.75rem; line-height: 0.9; letter-spacing: -0.03em; color: var(--helper);">4</span>
+          <h3 style="margin: 0; font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1.15;">Elige con confianza</h3>
+        </div>
+        <p style="margin: 0; color: var(--helper); font-size: 1rem; line-height: 1.55;">Revisa trabajos previos y reseñas reales; al final, ambos se califican.</p>
+      </div>
+    </li>
+  </ol>
+
+  <ul style="margin: 0; padding: 22px 28px; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px 28px; border-radius: 14px; background: var(--card); border: 1px solid var(--card-border);">
+    <li style="display: flex; align-items: center; gap: 14px; font-size: 0.9375rem; color: var(--body);">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; color: var(--text);"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>
+      <span>Fotos y video de la falla antes de cotizar</span>
+    </li>
+    <li style="display: flex; align-items: center; gap: 14px; font-size: 0.9375rem; color: var(--body);">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; color: var(--text);"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+      <span>Técnicos verificados cerca de ti</span>
+    </li>
+    <li style="display: flex; align-items: center; gap: 14px; font-size: 0.9375rem; color: var(--body);">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; color: var(--text);"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"></path></svg>
+      <span>Reparaciones reales para inspirarte</span>
+    </li>
+    <li style="display: flex; align-items: center; gap: 14px; font-size: 0.9375rem; color: var(--body);">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; color: var(--text);"><path d="M22 7 13.5 15.5 8.5 10.5 2 17"></path><path d="M16 7h6v6"></path></svg>
+      <span><strong style="font-weight: 700; color: var(--text);">Para técnicos:</strong> clientes nuevos, portafolio e impulsos</span>
+    </li>
+  </ul>
+
+  <div id="demo" style="display: flex; flex-wrap: wrap; align-items: center; gap: 48px 64px; padding: clamp(28px, 4vw, 56px); border-radius: 14px; background: var(--card); border: 1px solid var(--card-border); scroll-margin-top: 96px;">
+    <div style="flex: 1 1 300px; min-width: 0; display: flex; justify-content: center;">
+      <div style="width: 100%; max-width: 290px; aspect-ratio: 9 / 19.5; border-radius: 46px; background: var(--phone); padding: 10px; box-shadow: var(--shadow);">
+        <div style="width: 100%; height: 100%; border-radius: 37px; overflow: hidden; background: #1B1F29;">
+          <video src="images/04-demo.mp4" poster="./assets/129280d2f3ea16a8cb4b5ca0e12991ec.png" autoplay="" muted="" loop="" playsinline="" controls="" preload="metadata" id="fx-demo-video" ref="{{videoRef}}" aria-label="Video de demostración de la app Fixero, sin audio" style="display: block; width: 100%; height: 100%; object-fit: cover; background: #1B1F29;"></video>
+        </div>
+      </div>
+    </div>
+    <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 18px;">
+      <p style="margin: 0; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--helper);">La demo</p>
+      <h3 style="margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 3.2vw, 2.75rem); line-height: 1.1; letter-spacing: -0.01em;">Mira Fixero en acción</h3>
+      <ol style="margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px;">
+        <li style="{{s0li}}"><span style="{{s0n}}">01</span><span>Describe<span style="{{s0sm}}">Con ayuda de IA si no sabes qué falla tiene</span></span><span aria-hidden="true" style="{{s0bar}}"></span></li>
+        <li style="{{s1li}}"><span style="{{s1n}}">02</span><span>Recibe propuestas</span><span aria-hidden="true" style="{{s1bar}}"></span></li>
+        <li style="{{s2li}}"><span style="{{s2n}}">03</span><span>Compara</span><span aria-hidden="true" style="{{s2bar}}"></span></li>
+        <li style="{{s3li}}"><span style="{{s3n}}">04</span><span>Chatea</span><span aria-hidden="true" style="{{s3bar}}"></span></li>
+        <li style="{{s4li}}"><span style="{{s4n}}">05</span><span>Elige</span><span aria-hidden="true" style="{{s4bar}}"></span></li>
+        <li style="{{s5li}}"><span style="{{s5n}}">06</span><span>Califica</span><span aria-hidden="true" style="{{s5bar}}"></span></li>
+      </ol>
+      <p style="margin: 6px 0 0; font-size: 0.9375rem; color: var(--helper);">Demo grabada en la app real, sin audio. El paso que se muestra se resalta en la lista.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 COMPARATIVA -->
+<section aria-labelledby="comp-t" style="max-width: 1240px; margin: 0 auto; padding: 24px clamp(20px, 4vw, 48px) clamp(56px, 7vw, 96px); display: flex; flex-direction: column; gap: 40px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--helper);">
+    <span style="display: flex; align-items: center; gap: 16px;"><span>03</span><span aria-hidden="true" style="width: 40px; height: 1px; background: currentColor;"></span><span>Competencia</span></span>
+    <span>Ventaja</span>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 18px; max-width: 900px;">
+    <p style="margin: 0; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--helper);">Lo que hoy existe</p>
+    <h2 id="comp-t" style="margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(2.25rem, 4.2vw, 3.75rem); line-height: 1.08; letter-spacing: -0.01em;">La reputación es del técnico, no del local</h2>
+  </div>
+  <div style="overflow-x: auto; padding: 14px 4px 18px;">
+    <table style="width: 100%; min-width: 820px; font-size: 1.0625rem;">
+      <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Comparativa de Fixero con otras formas de encontrar un técnico</caption>
+      <thead>
+        <tr>
+          <th scope="col" style="width: 34%; padding: 0;"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Característica</span></th>
+          <th scope="col" style="width: 16%; padding: 22px 12px; background: var(--card); border: 2px solid var(--accent); border-bottom: 0; border-radius: 14px 14px 0 0; font-family: var(--display); font-weight: 700; font-size: 1.5rem; color: var(--text);">Fixero</th>
+          <td aria-hidden="true" style="width: 14px; padding: 0;"></td>
+          <th scope="col" style="padding: 22px 12px; background: var(--field); border-radius: 14px 0 0 0; font-family: var(--mono); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.35; color: var(--helper);">Facebook y WhatsApp</th>
+          <th scope="col" style="padding: 22px 12px; background: var(--field); font-family: var(--mono); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.35; color: var(--helper);">Google Maps</th>
+          <th scope="col" style="padding: 22px 12px; background: var(--field); border-radius: 0 14px 0 0; font-family: var(--mono); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.35; color: var(--helper);">Plazas y talleres</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" style="text-align: left; padding: 20px 24px 20px 0; font-weight: 400; color: var(--body); border-top: 1px solid var(--card-border);">Comparar propuestas de varios técnicos</th>
+          <td style="text-align: center; padding: 20px 12px; background: var(--card); border-left: 2px solid var(--accent); border-right: 2px solid var(--accent); border-top: 1px solid var(--card-border);"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Sí" style="color: var(--text); vertical-align: middle;"><path d="M20 6 9 17l-5-5"></path></svg></td>
+          <td aria-hidden="true" style="padding: 0; width: 14px;"></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="Parcial o manual" style="color: var(--secondary); vertical-align: middle;"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"></path></svg></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" role="img" aria-label="No" style="color: var(--secondary); vertical-align: middle;"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="Parcial o manual" style="color: var(--secondary); vertical-align: middle;"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"></path></svg></td>
+        </tr>
+        <tr>
+          <th scope="row" style="text-align: left; padding: 20px 24px 20px 0; font-weight: 400; color: var(--body); border-top: 1px solid var(--card-border);">Técnico con identidad verificada</th>
+          <td style="text-align: center; padding: 20px 12px; background: var(--card); border-left: 2px solid var(--accent); border-right: 2px solid var(--accent); border-top: 1px solid var(--card-border);"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Sí" style="color: var(--text); vertical-align: middle;"><path d="M20 6 9 17l-5-5"></path></svg></td>
+          <td aria-hidden="true" style="padding: 0; width: 14px;"></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" role="img" aria-label="No" style="color: var(--secondary); vertical-align: middle;"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" role="img" aria-label="No" style="color: var(--secondary); vertical-align: middle;"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="Parcial o manual" style="color: var(--secondary); vertical-align: middle;"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"></path></svg></td>
+        </tr>
+        <tr>
+          <th scope="row" style="text-align: left; padding: 20px 24px 20px 0; font-weight: 400; color: var(--body); border-top: 1px solid var(--card-border);">Reseñas solo de servicios reales</th>
+          <td style="text-align: center; padding: 20px 12px; background: var(--card); border-left: 2px solid var(--accent); border-right: 2px solid var(--accent); border-top: 1px solid var(--card-border);"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Sí" style="color: var(--text); vertical-align: middle;"><path d="M20 6 9 17l-5-5"></path></svg></td>
+          <td aria-hidden="true" style="padding: 0; width: 14px;"></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" role="img" aria-label="No" style="color: var(--secondary); vertical-align: middle;"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" role="img" aria-label="No" style="color: var(--secondary); vertical-align: middle;"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" role="img" aria-label="No" style="color: var(--secondary); vertical-align: middle;"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></td>
+        </tr>
+        <tr>
+          <th scope="row" style="text-align: left; padding: 20px 24px 20px 0; font-weight: 400; color: var(--body); border-top: 1px solid var(--card-border);">Ayuda si no sabes qué falla tiene</th>
+          <td style="text-align: center; padding: 20px 12px; background: var(--card); border-left: 2px solid var(--accent); border-right: 2px solid var(--accent); border-top: 1px solid var(--card-border);"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Sí" style="color: var(--text); vertical-align: middle;"><path d="M20 6 9 17l-5-5"></path></svg></td>
+          <td aria-hidden="true" style="padding: 0; width: 14px;"></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="Parcial o manual" style="color: var(--secondary); vertical-align: middle;"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"></path></svg></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" role="img" aria-label="No" style="color: var(--secondary); vertical-align: middle;"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="Parcial o manual" style="color: var(--secondary); vertical-align: middle;"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"></path></svg></td>
+        </tr>
+        <tr>
+          <th scope="row" style="text-align: left; padding: 20px 24px 20px 0; font-weight: 400; color: var(--body); border-top: 1px solid var(--card-border);">Evidencia del trabajo (portafolio)</th>
+          <td style="text-align: center; padding: 20px 12px; background: var(--card); border-left: 2px solid var(--accent); border-right: 2px solid var(--accent); border-top: 1px solid var(--card-border); border-bottom: 2px solid var(--accent); border-radius: 0 0 14px 14px;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Sí" style="color: var(--text); vertical-align: middle;"><path d="M20 6 9 17l-5-5"></path></svg></td>
+          <td aria-hidden="true" style="padding: 0; width: 14px;"></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border); border-radius: 0 0 0 14px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="Parcial o manual" style="color: var(--secondary); vertical-align: middle;"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"></path></svg></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" role="img" aria-label="Parcial o manual" style="color: var(--secondary); vertical-align: middle;"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"></path></svg></td>
+          <td style="text-align: center; padding: 20px 12px; background: var(--field); border-top: 1px solid var(--card-border); border-radius: 0 0 14px 0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" role="img" aria-label="No" style="color: var(--secondary); vertical-align: middle;"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ul aria-label="Leyenda" style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 12px 32px; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--helper);">
+    <li style="display: flex; align-items: center; gap: 10px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--text);"><path d="M20 6 9 17l-5-5"></path></svg>Sí</li>
+    <li style="display: flex; align-items: center; gap: 10px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"></path></svg>Parcial o manual</li>
+    <li style="display: flex; align-items: center; gap: 10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>No</li>
+  </ul>
+</section>
+
+<!-- 04 CONFIANZA -->
+<section id="confianza" aria-labelledby="conf-t" style="background: var(--bg2);">
+  <div style="max-width: 1240px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 48px); display: flex; flex-direction: column; gap: 40px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--helper);">
+      <span style="display: flex; align-items: center; gap: 16px;"><span>04</span><span aria-hidden="true" style="width: 40px; height: 1px; background: currentColor;"></span><span>Confianza</span></span>
+      <span>Reglas del sistema</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 18px; max-width: 900px;">
+      <p style="margin: 0; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--helper);">Reglas claras para los dos lados</p>
+      <h2 id="conf-t" style="margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(2.25rem, 4.2vw, 3.75rem); line-height: 1.08; letter-spacing: -0.01em;">Confianza y seguridad</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+      <div style="display: flex; gap: 20px; align-items: flex-start; padding: 30px 32px; border-radius: 14px; background: var(--card); border: 1px solid var(--card-border);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; color: var(--text);"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        <p style="margin: 0; font-size: 1.125rem; line-height: 1.55; color: var(--body);">Identidad del técnico <strong style="font-weight: 700; color: var(--text);">verificada manualmente</strong> antes de operar.</p>
+      </div>
+      <div style="display: flex; gap: 20px; align-items: flex-start; padding: 30px 32px; border-radius: 14px; background: var(--card); border: 1px solid var(--card-border);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; color: var(--text);"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><path d="m2 2 20 20"></path></svg>
+        <p style="margin: 0; font-size: 1.125rem; line-height: 1.55; color: var(--body);">Reseñas solo de servicios completados, <strong style="font-weight: 700; color: var(--text);">ocultas hasta que ambos califican</strong>.</p>
+      </div>
+      <div style="display: flex; gap: 20px; align-items: flex-start; padding: 30px 32px; border-radius: 14px; background: var(--card); border: 1px solid var(--card-border);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; color: var(--text);"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+        <p style="margin: 0; font-size: 1.125rem; line-height: 1.55; color: var(--body);">Suspensión automática con promedio menor a <strong style="font-family: var(--display); font-weight: 700; font-size: 1.5em; line-height: 1; color: var(--accent-display);">2.5</strong> y al menos 5 reseñas.</p>
+      </div>
+      <div style="display: flex; gap: 20px; align-items: flex-start; padding: 30px 32px; border-radius: 14px; background: var(--card); border: 1px solid var(--card-border);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; color: var(--text);"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>
+        <p style="margin: 0; font-size: 1.125rem; line-height: 1.55; color: var(--body);">La IA solo elige categorías del catálogo; <strong style="font-weight: 700; color: var(--text);">siempre existe la opción de llenar a mano</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 PARA TÉCNICOS -->
+<section id="tecnicos" aria-labelledby="tec-t" style="max-width: 1240px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 48px); display: flex; flex-direction: column; gap: 44px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--helper);">
+    <span style="display: flex; align-items: center; gap: 16px;"><span>05</span><span aria-hidden="true" style="width: 40px; height: 1px; background: currentColor;"></span><span>Para técnicos</span></span>
+    <span>Precios en MXN, IVA incluido</span>
+  </div>
+  <div style="display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; justify-content: space-between;">
+    <div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 18px;">
+      <p style="margin: 0; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--helper);">Impulsos de perfil</p>
+      <h2 id="tec-t" style="margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(2.25rem, 4.2vw, 3.75rem); line-height: 1.08; letter-spacing: -0.01em;">Gratis para el cliente.<br>El técnico paga por destacar.</h2>
+    </div>
+    <ul style="flex: 1 1 360px; min-width: 0; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+      <li style="display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid var(--card-border); color: var(--body);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 3px; color: var(--accent-ink);"><path d="M20 6 9 17l-5-5"></path></svg><span><strong style="font-weight: 700; color: var(--text);">Clientes nuevos</strong> de tu zona que ya describieron la falla.</span></li>
+      <li style="display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid var(--card-border); color: var(--body);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 3px; color: var(--accent-ink);"><path d="M20 6 9 17l-5-5"></path></svg><span><strong style="font-weight: 700; color: var(--text);">Tu portafolio</strong> como evidencia de tu trabajo.</span></li>
+      <li style="display: flex; gap: 14px; padding: 14px 0; border-top: 1px solid var(--card-border); color: var(--body);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 3px; color: var(--accent-ink);"><path d="M20 6 9 17l-5-5"></path></svg><span><strong style="font-weight: 700; color: var(--text);">Tu reputación es tuya</strong>, no del local donde trabajas.</span></li>
+    </ul>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start; padding: 34px 32px; border-radius: 14px; background: var(--card); border: 1px solid var(--card-border);">
+      <span style="font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--helper);">3 días</span>
+      <span style="font-family: var(--display); font-weight: 700; font-size: 4.5rem; line-height: 0.92; letter-spacing: -0.03em; font-feature-settings: 'tnum';">$69</span>
+      <span style="font-size: 0.9375rem; color: var(--helper);">Para probar cómo se siente aparecer primero.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start; padding: 48px 36px; border-radius: 14px; background: var(--card); border: 2px solid var(--accent); box-shadow: var(--shadow-card);">
+      <span style="display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--text); color: var(--bg); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase;">Recomendado</span>
+      <span style="font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--helper);">7 días</span>
+      <span style="font-family: var(--display); font-weight: 700; font-size: 5.75rem; line-height: 0.92; letter-spacing: -0.03em; font-feature-settings: 'tnum';">$125</span>
+      <span style="font-size: 0.9375rem; color: var(--helper);">Una semana completa destacando en tu zona.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start; padding: 34px 32px; border-radius: 14px; background: var(--card); border: 1px solid var(--card-border);">
+      <span style="font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--helper);">14 días</span>
+      <span style="font-family: var(--display); font-weight: 700; font-size: 4.5rem; line-height: 0.92; letter-spacing: -0.03em; font-feature-settings: 'tnum';">$199</span>
+      <span style="font-size: 0.9375rem; color: var(--helper);">Dos semanas de visibilidad al mejor precio por día.</span>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; padding-top: 28px; border-top: 1px solid var(--line);">
+    <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px;">
+      <span style="font-family: var(--display); font-weight: 700; font-size: clamp(1.5rem, 2.2vw, 2rem);">Sin comisión por reparación</span>
+      <span style="font-size: 0.9375rem; color: var(--helper);">Registrarte y recibir solicitudes será gratis.</span>
+    </div>
+    <span style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 999px; border: 1px solid var(--line); font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--secondary);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>Registro de técnicos próximamente</span>
+  </div>
+</section>
+
+<!-- 06 MERCADO -->
+<section class="ink" aria-labelledby="mer-t">
+  <div style="max-width: 1240px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 48px); display: flex; flex-direction: column; gap: 44px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--s-line); font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--s-helper);">
+      <span style="display: flex; align-items: center; gap: 16px;"><span>06</span><span aria-hidden="true" style="width: 40px; height: 1px; background: currentColor;"></span><span>El mercado</span></span>
+      <span>Arrancamos en Tijuana</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 18px; max-width: 900px;">
+      <p style="margin: 0; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--s-helper);">Tijuana, para empezar</p>
+      <h2 id="mer-t" style="margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(2.25rem, 4.2vw, 3.75rem); line-height: 1.08; letter-spacing: -0.01em; color: #F3F5FB;">Un mercado grande y desorganizado</h2>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px 28px;">
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 18px; border-top: 1px solid rgba(243,245,251,.45);">
+        <span style="font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--s-helper);">Negocios de reparación</span>
+        <span style="font-family: var(--display); font-weight: 700; font-size: clamp(3.5rem, 5.6vw, 5rem); line-height: 0.9; letter-spacing: -0.03em; color: #FF5C35; font-feature-settings: 'tnum';">362</span>
+        <span style="color: var(--s-sec); font-size: 1rem;">negocios registrados de reparación electrónica en Tijuana, sin contar independientes</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 18px; border-top: 1px solid rgba(243,245,251,.45);">
+        <span style="font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--s-helper);">Smartphone</span>
+        <span style="font-family: var(--display); font-weight: 700; font-size: clamp(3.5rem, 5.6vw, 5rem); line-height: 0.9; letter-spacing: -0.03em; color: #F3F5FB; font-feature-settings: 'tnum';">97%</span>
+        <span style="color: var(--s-sec); font-size: 1rem;">de los usuarios de celular en México usa smartphone</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 18px; border-top: 1px solid rgba(243,245,251,.45);">
+        <span style="font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--s-helper);">Internet en Baja California</span>
+        <span style="font-family: var(--display); font-weight: 700; font-size: clamp(3.5rem, 5.6vw, 5rem); line-height: 0.9; letter-spacing: -0.03em; color: #F3F5FB; font-feature-settings: 'tnum';">93.2%</span>
+        <span style="color: var(--s-sec); font-size: 1rem;">de la población del estado usa internet, segundo lugar nacional</span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; font-family: var(--display); font-weight: 700; font-size: clamp(1.375rem, 2.2vw, 1.875rem); color: #F3F5FB;">
+      <span>Piloto en Tijuana</span>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #FF5C35;"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+      <span>Baja California en el primer año</span>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; min-width: 640px; font-size: 1.0625rem;">
+        <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Cómo se repara hoy y cómo será con Fixero</caption>
+        <thead>
+          <tr>
+            <th scope="col" style="text-align: left; padding: 0 24px 16px 0; width: 38%; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--s-helper); font-weight: 500;">Hoy</th>
+            <th scope="col" style="text-align: left; padding: 0 0 16px; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--s-accent); font-weight: 500;">Con Fixero</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 18px 24px 18px 0; border-top: 1px solid var(--s-line); color: var(--s-sec);">No sabes qué tiene tu equipo</td>
+            <td style="padding: 18px 0; border-top: 1px solid var(--s-line); color: var(--s-body);"><strong style="color: #FF7A59; font-weight: 700;">Un asistente con IA</strong> identifica la falla y arma tu solicitud.</td>
+          </tr>
+          <tr>
+            <td style="padding: 18px 24px 18px 0; border-top: 1px solid var(--s-line); color: var(--s-sec);">Vas de taller en taller</td>
+            <td style="padding: 18px 0; border-top: 1px solid var(--s-line); color: var(--s-body);"><strong style="color: #FF7A59; font-weight: 700;">Varias propuestas</strong> con precio y tiempo, sin salir de casa.</td>
+          </tr>
+          <tr>
+            <td style="padding: 18px 24px 18px 0; border-top: 1px solid var(--s-line); color: var(--s-sec);">Eliges a ciegas</td>
+            <td style="padding: 18px 0; border-top: 1px solid var(--s-line); color: var(--s-body);"><strong style="color: #FF7A59; font-weight: 700;">Portafolio y reseñas reales</strong> antes de decidir.</td>
+          </tr>
+          <tr>
+            <td style="padding: 18px 24px 18px 0; border-top: 1px solid var(--s-line); color: var(--s-sec);">Pierdes el hilo de la reparación</td>
+            <td style="padding: 18px 0; border-top: 1px solid var(--s-line); color: var(--s-body);"><strong style="color: #FF7A59; font-weight: 700;">Un solo chat</strong> con fotos y video, de principio a fin.</td>
+          </tr>
+          <tr>
+            <td style="padding: 18px 24px 18px 0; border-top: 1px solid var(--s-line); color: var(--s-sec);">Los técnicos dependen de recomendaciones</td>
+            <td style="padding: 18px 0; border-top: 1px solid var(--s-line); color: var(--s-body);"><strong style="color: #FF7A59; font-weight: 700;">Una reputación propia</strong>, construida con evidencia.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin: 0; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--s-helper);">Fuentes: INEGI, DENUE y ENDUTIH 2025.</p>
+  </div>
+</section>
+
+<!-- 07 PREGUNTAS -->
+<section id="preguntas" aria-labelledby="faq-t" style="max-width: 1240px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 48px); display: flex; flex-direction: column; gap: 40px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--helper);">
+    <span style="display: flex; align-items: center; gap: 16px;"><span>07</span><span aria-hidden="true" style="width: 40px; height: 1px; background: currentColor;"></span><span>Preguntas frecuentes</span></span>
+    <span>Ayuda</span>
+  </div>
+  <div style="display: flex; flex-wrap: wrap; gap: 48px;">
+    <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 18px;">
+      <p style="margin: 0; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--helper);">Antes de empezar</p>
+      <h2 id="faq-t" style="margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(2.25rem, 4.2vw, 3.75rem); line-height: 1.08; letter-spacing: -0.01em;">Lo que todos preguntan</h2>
+    </div>
+    <div style="flex: 2 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 10px;">
+      <details style="border-radius: 14px; border: 1px solid var(--card-border); transition: background .2s;">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 16px 24px; font-family: var(--display); font-weight: 700; font-size: 1.3125rem; line-height: 1.3;">
+          <span>¿Cuándo sale la app?</span>
+          <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="flex: none; color: var(--accent-ink); transition: transform .2s;"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        </summary>
+        <p style="margin: 0; padding: 0 24px 24px; color: var(--body); max-width: 62ch;">Estamos preparando el lanzamiento en Tijuana, para Android e iOS. Mientras tanto, puedes ver la app funcionando en la demo de esta página.</p>
+      </details>
+      <details style="border-radius: 14px; border: 1px solid var(--card-border); transition: background .2s;">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 16px 24px; font-family: var(--display); font-weight: 700; font-size: 1.3125rem; line-height: 1.3;">
+          <span>¿Cuánto me costará usar Fixero?</span>
+          <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="flex: none; color: var(--accent-ink); transition: transform .2s;"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        </summary>
+        <p style="margin: 0; padding: 0 24px 24px; color: var(--body); max-width: 62ch;">Nada. Fixero será gratis para el cliente: publicas tu solicitud, recibes propuestas y eliges sin pagar comisión. Solo pagas la reparación que acuerdes con el técnico.</p>
+      </details>
+      <details style="border-radius: 14px; border: 1px solid var(--card-border); transition: background .2s;">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 16px 24px; font-family: var(--display); font-weight: 700; font-size: 1.3125rem; line-height: 1.3;">
+          <span>¿Cómo sabré que el técnico es confiable?</span>
+          <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="flex: none; color: var(--accent-ink); transition: transform .2s;"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        </summary>
+        <p style="margin: 0; padding: 0 24px 24px; color: var(--body); max-width: 62ch;">Cada técnico pasa por una verificación manual de identidad antes de operar. Además, podrás ver su portafolio de trabajos y reseñas que solo dejan clientes con servicios completados.</p>
+      </details>
+      <details style="border-radius: 14px; border: 1px solid var(--card-border); transition: background .2s;">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 16px 24px; font-family: var(--display); font-weight: 700; font-size: 1.3125rem; line-height: 1.3;">
+          <span>¿Qué pasa si no sé qué tiene mi equipo?</span>
+          <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="flex: none; color: var(--accent-ink); transition: transform .2s;"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        </summary>
+        <p style="margin: 0; padding: 0 24px 24px; color: var(--body); max-width: 62ch;">Cuéntaselo al asistente con tus palabras o con fotos. La IA identifica la falla, la ubica en el catálogo y arma tu solicitud; tú la confirmas antes de publicar. Si prefieres, la llenas a mano.</p>
+      </details>
+      <details style="border-radius: 14px; border: 1px solid var(--card-border); transition: background .2s;">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 16px 24px; font-family: var(--display); font-weight: 700; font-size: 1.3125rem; line-height: 1.3;">
+          <span>¿Las reseñas se pueden manipular?</span>
+          <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="flex: none; color: var(--accent-ink); transition: transform .2s;"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        </summary>
+        <p style="margin: 0; padding: 0 24px 24px; color: var(--body); max-width: 62ch;">Solo se pueden calificar servicios terminados, y la calificación de cada parte permanece oculta hasta que ambos califican o vence el plazo. Así nadie responde en represalia.</p>
+      </details>
+      <details style="border-radius: 14px; border: 1px solid var(--card-border); transition: background .2s;">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 16px 24px; font-family: var(--display); font-weight: 700; font-size: 1.3125rem; line-height: 1.3;">
+          <span>Soy técnico, ¿Fixero me cobrará comisión?</span>
+          <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="flex: none; color: var(--accent-ink); transition: transform .2s;"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        </summary>
+        <p style="margin: 0; padding: 0 24px 24px; color: var(--body); max-width: 62ch;">No. Registrarte y recibir solicitudes será gratis y no habrá comisión por reparación. Si quieres aparecer primero, podrás comprar un impulso de perfil de 3, 7 o 14 días.</p>
+      </details>
+      <details style="border-radius: 14px; border: 1px solid var(--card-border); transition: background .2s;">
+        <summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 16px 24px; font-family: var(--display); font-weight: 700; font-size: 1.3125rem; line-height: 1.3;">
+          <span>¿Dónde estará disponible?</span>
+          <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" style="flex: none; color: var(--accent-ink); transition: transform .2s;"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+        </summary>
+        <p style="margin: 0; padding: 0 24px 24px; color: var(--body); max-width: 62ch;">Fixero llegará primero a Tijuana. Más adelante, el plan es crecer a Mexicali y Ensenada.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CIERRE -->
+<section id="descarga" class="ink" aria-labelledby="cta-t">
+  <div style="max-width: 1240px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(20px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; gap: 56px;">
+    <div style="flex: 1 1 480px; min-width: 0; max-width: 820px; display: flex; flex-direction: column; gap: 24px;">
+      <p style="margin: 0; font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--s-helper);">Muy pronto</p>
+      <h2 id="cta-t" style="margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(2.5rem, 4.8vw, 4.25rem); line-height: 1.04; letter-spacing: -0.02em; color: #F3F5FB;">Repara con confianza.<br>Repara con <span style="color: #FF5C35;">Fixero</span>.</h2>
+      <p style="margin: 0; font-family: var(--serif); font-size: 1.25rem; line-height: 1.55; color: var(--s-body); max-width: 46ch;"><strong style="font-weight: 500; color: #F3F5FB;">De la incertidumbre a la confianza:</strong> el cliente sabrá qué necesita, cuánto pagará y quién lo atenderá; el técnico ganará visibilidad y clientes.</p>
+      <ul aria-label="Plataformas" style="margin: 4px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 12px;">
+        <li style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(243,245,251,.45); font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.16em; text-transform: uppercase; color: #F3F5FB;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+          Próximamente en iOS
+        </li>
+        <li style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(243,245,251,.45); font-family: var(--mono); font-size: 0.8125rem; letter-spacing: 0.16em; text-transform: uppercase; color: #F3F5FB;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+          Próximamente en Android
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer style="background: #0E1117; color: #F3F5FB; border-top: 1px solid rgba(243,245,251,.12);">
+  <div style="max-width: 1240px; margin: 0 auto; padding: 48px clamp(20px, 4vw, 48px) 40px; display: flex; flex-direction: column; gap: 36px;">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 28px;">
+      <p style="margin: 0; max-width: 24ch; font-family: var(--display); font-weight: 700; font-size: clamp(1.625rem, 2.6vw, 2.25rem); line-height: 1.15; color: #F3F5FB;">Que encontrar un técnico de confianza deje de ser cuestión de suerte.</p>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <svg viewBox="183 78 651 815" width="30" height="38" aria-hidden="true" style="color: #FF5C35;"><path fill="currentColor" d="m833.4 400.4c0-82.43-24.32-151.8-83.2-216.6-60.16-66.18-145.4-105.1-236.5-105.1-179.5 0-330.1 140.8-330.1 318.7 0 118.5 50.18 212.9 129.5 265-0.128 0.512-0.384 1.024-0.64 1.664-24.06 55.42-50.94 115.7-72.7 170.9-3.584 9.088 3.584 13.7 11.65 11.01l76.54-28.29c3.712-1.28 7.296-0.256 9.6 2.816l51.2 67.07c5.632 7.04 14.46 5.248 16.64-2.944l48.51-166.1c18.18 2.816 36.35 4.48 54.53 4.48 19.71 0 39.04-2.048 55.04-4.48 16.26 53.76 32.9 115.3 45.57 167 2.048 7.552 11.78 9.216 16.38 3.072l51.84-66.94c2.56-3.584 6.528-4.48 10.37-3.2l76.8 26.62c9.344 3.712 15.62-2.944 12.29-11.26-22.78-57.09-49.41-122-72.58-173.4 78.98-58.88 129.3-148.5 129.3-253.6v-6.4zm-329.7 289.8c-160.9 0-284-123.9-284-284.2v-6.784c0-162 130.8-283.9 293.8-283.9 161.9 0 285.2 123.8 285.2 283.1v7.808c0 168.1-134.8 283.9-294.9 283.9z"></path><path fill="currentColor" d="m513 140.4c-146.9 0-269.8 111.1-269.8 263.7v2.816c0 153 117 258.6 262.5 258.6 152.3 0 270-111.7 270-260.2v-6.528c0-145.3-117.9-258.3-262.7-258.3zm228.4 264.8c0 59.9-19.58 112.1-65.41 154.9-46.85 45.95-110.6 73.86-174.3 73.86-125.1 0-224.9-99.71-224.9-226.2v-4.352c0-133 105.5-228.9 235.6-228.9 127.5 0 228.9 98.69 228.9 225l0.128 5.632z"></path><path fill="currentColor" d="m664.7 320.6-36.35 38.4c-13.31 14.34-56.83-28.67-45.31-41.47l41.98-38.02c5.632-5.888 2.688-15.49-6.784-17.54-57.86-9.728-110.7 39.68-100.7 99.71 0.128 1.024-0.384 1.664-1.152 2.432l-142.7 124.7c-34.56 31.49 12.54 82.56 48.26 58.24 49.15-40.45 103.8-88.83 145.8-127.5 0.64-0.512 1.408-0.512 2.176-0.256 65.92 25.09 129.3-44.29 111.9-94.98-1.792-7.936-10.75-8.96-17.02-3.712z"></path></svg>
+        <span style="font-family: var(--display); font-weight: 700; font-size: 1.75rem; letter-spacing: -0.02em;">Fixero</span>
+      </div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 28px; padding-top: 18px; border-top: 1px solid rgba(243,245,251,.22); font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;">
+      <span style="display: flex; align-items: center; gap: 8px; color: rgba(243,245,251,.70);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        Tijuana, Baja California
+      </span>
+      <nav aria-label="Pie de página" style="display: flex; flex-wrap: wrap; gap: 10px 28px;">
+        <a href="#como-funciona" class="foot-link">Cómo funciona</a>
+        <a href="#confianza" class="foot-link">Confianza</a>
+        <a href="#tecnicos" class="foot-link">Para técnicos</a>
+        <a href="#preguntas" class="foot-link">Preguntas</a>
+      </nav>
+      <span style="color: rgba(243,245,251,.70);">© 2026 Fixero</span>
+    </div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false,"section":"Tema"},"$preview":{"width":1440,"height":8600}}'>
+class Component extends DCLogic {
+  componentDidMount() {
+    var self = this;
+    this._alive = true;
+    var tick = function () {
+      if (!self._alive) return;
+      self.syncDemo();
+      self._raf = requestAnimationFrame(tick);
+    };
+    this._raf = requestAnimationFrame(tick);
+  }
+  componentWillUnmount() {
+    this._alive = false;
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+  syncDemo() {
+    var v = this._video;
+    if (!v || !v.isConnected) {
+      v = document.getElementById('fx-demo-video');
+      this._video = v;
+    }
+    if (!v || !(v.readyState > 0)) return;
+    var starts = [0, 5.017, 9.017, 13.217, 22.283, 26.617];
+    var t = v.currentTime || 0;
+    var i = 0;
+    while (i + 1 < starts.length && t >= starts[i + 1]) i++;
+    var end = i + 1 < starts.length ? starts[i + 1] : (v.duration || starts[i] + 5);
+    var p = Math.max(0, Math.min(1, (t - starts[i]) / (end - starts[i])));
+    p = Math.round(p * 60) / 60;
+    var cur = this.state || {};
+    if (cur.step !== i || cur.prog !== p) this.setState({ step: i, prog: p });
+  }
+  renderVals() {
+    var s = this.state || {};
+    var dark = (s.dark === true || s.dark === false) ? s.dark : !!this.props.dark;
+    var step = typeof s.step === 'number' ? s.step : 0;
+    var prog = typeof s.prog === 'number' ? s.prog : 0;
+    var self = this;
+    if (!this._videoRef) this._videoRef = function (el) { if (el) self._video = el; };
+
+    var out = {
+      rootClass: dark ? 'fx dark' : 'fx',
+      isDark: dark,
+      isLight: !dark,
+      themeLabel: dark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro',
+      toggleTheme: function () { self.setState({ dark: !dark }); },
+      videoRef: this._videoRef
+    };
+
+    for (var k = 0; k < 6; k++) {
+      var active = k === step;
+      var prevActive = k - 1 === step;
+      var li = 'position: relative; display: grid; grid-template-columns: 44px 1fr; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; font-family: var(--display); font-weight: 700; font-size: 1.375rem; line-height: 1.15; transition: color .45s ease, background-color .45s ease;';
+      li += (k === 0 || active || prevActive) ? ' border-top: 1px solid transparent;' : ' border-top: 1px solid var(--card-border);';
+      li += active ? ' background: var(--accent-soft); color: var(--accent-display);' : ' color: var(--text);';
+      out['s' + k + 'li'] = li;
+      out['s' + k + 'n'] = 'font-family: var(--mono); font-weight: 400; font-size: 0.8125rem; letter-spacing: 0.1em; transition: color .45s ease; color: ' + (active ? 'var(--accent-ink)' : 'var(--helper)') + ';';
+      out['s' + k + 'sm'] = 'display: block; margin-top: 4px; font-family: var(--sans); font-weight: 400; font-size: 0.9375rem; color: ' + (active ? 'var(--accent-ink)' : 'var(--helper)') + ';';
+      out['s' + k + 'bar'] = 'position: absolute; left: 16px; right: 16px; bottom: 5px; height: 2px; border-radius: 2px; background: var(--accent); transform-origin: left center; transform: scaleX(' + (active ? prog : 0) + '); opacity: ' + (active ? '0.85' : '0') + '; transition: opacity .3s ease;';
+    }
+    return out;
+  }
+}
+</script>
+</body>
+</html>
